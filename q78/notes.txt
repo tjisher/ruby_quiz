@@ -28,3 +28,9 @@ _2
 as _1 but also reverse check to quickly discard outside 
 - ie its a single box it should match
 - only useful for the outmost ?
+
+_3
+love the regex, believe in the regex
+- simple pass/fail
+- a bit britle
+- faster ? surely
