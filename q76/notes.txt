@@ -1,0 +1,3 @@
+Simple word identification and randoming, ignoring first and last char
+
+performance and memory use likely only extensions
