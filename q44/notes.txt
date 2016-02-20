@@ -1,0 +1,19 @@
+can expect real benchmark times ~2 seconds upto a minute if done badly
+
+approach_1
+process a whole dictionary file to find start, end words and the possible working space between
+discard obvious misses ie length
+iterate through looking for progress
+- discard obvious failed steps
+
+approach_2
+leave it to genetrics
+
+_3
+as _1 but work backwards as well as forwards
+- ie if one of these X words path is already known
+- only if first checks are quicker or can help obvious discards
+
+_4
+
+
