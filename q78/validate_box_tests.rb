@@ -1,0 +1,1 @@
+require_relative 'validate_box.rb'

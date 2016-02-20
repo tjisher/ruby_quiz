@@ -1,0 +1,30 @@
+
+Fixing the string will be difficult, can create but how determine intention
+- present list of options ?
+- highlight the errant bit ? 
+- present solution with explaination ? ie highlight change
+
+Seperate routine for accepting changes to a failed run ?
+- ie designed to cope/respond to small changes
+- possibly tied to pre-presented solutions ie "I'll go with your suggest solution no3"
+- need verbage to abonden or continue attempts
+
+Memory of valid results ?
+- ie this looks simular to this solution, want to use it instead ?
+
+Show box expense ie how many used and wasted ones ie nothing inside or double cardboard
+- need cost valution of box types and relative strength/properties
+
+Some sort of safety rating
+- to balance box expense and make sure weak goods have minimum
+- use F instead of B, ie state type of content Fittings vs solid Bracket
+
+
+approach_1
+loop left to right recording number opened and closed
+- check if closed match last opened
+
+_2
+as _1 but also reverse check to quickly discard outside 
+- ie its a single box it should match
+- only useful for the outmost ?
