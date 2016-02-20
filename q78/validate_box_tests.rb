@@ -55,6 +55,10 @@ describe Box do
 		Box.valid?("B").must_be_same_as(false)
 	end
 
+	it "fails when items are not individualy wrapped" do
+		Box.valid?("(BB)").must_be_same_as(false)
+	end
+
 	it "fails when warpping is started but not closed" do
 		Box.valid?("(B").must_be_same_as(false)
 		#todo# all iterations)
@@ -95,19 +99,39 @@ describe Box do
 		#todo# all iterations
 	end
 
+	it "fails when nested wrapping is closed too soon" do
+		Box.valid?("{(B})").must_be_same_as(false)
+		#todo# all iterations
+	end
+
 	#orignal specification
-	it "passes and returns 0 for orginal specification example 1: [{(B)}{(B)(B)}]" do
+	# => against valid?
+	it "passes orginal specification example 1: [{(B)}{(B)(B)}]" do
 		Box.valid?("[{(B)}{(B)(B)}]").must_be_same_as(true)
+		#todo# remove this repeated test ?
+	end
+
+	it "fails for orignal specification example 2: [{(B}{(B)(B)}]" do
+		Box.valid?("[{(B}{(B)(B)}]").must_be_same_as(false)
+	end
+
+	it "fails for orignal specification example 3: {(B)}{(B)(B)}]" do
+		Box.valid?("{(B)}{(B)(B)}]").must_be_same_as(false)
+	end
+
+	# => against ouput
+	it "returns 0 for orginal specification example 1: [{(B)}{(B)(B)}]" do
+		skip
 		Box.validate("[{(B)}{(B)(B)}]").must_output(0)
 	end
 
-	it "fails and returns 1 for orignal specification example 2: [{(B}{(B)(B)}]" do
-		Box.valid?("[{(B}{(B)(B)}]").must_be_same_as(false)
+	it "returns 1 for orignal specification example 2: [{(B}{(B)(B)}]" do
+		skip
 		Box.validate("[{(B}{(B)(B)}]").must_output(1)
 	end
 
-	it "fails and returns 1 for orignal specification example 3: {(B)}{(B)(B)}]" do
-		Box.valid?("{(B)}{(B)(B)}]").must_be_same_as(false)
+	it "returns 1 for orignal specification example 3: {(B)}{(B)(B)}]" do
+		skip
 		Box.validate("{(B)}{(B)(B)}]").must_output(1)
 	end
 
