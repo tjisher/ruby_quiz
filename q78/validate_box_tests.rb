@@ -110,7 +110,6 @@ describe Box do
 	end
 
 	#orignal specification
-	# => against valid?
 	it "passes orginal specification example 1: [{(B)}{(B)(B)}]" do
 		Box.valid?("[{(B)}{(B)(B)}]").must_be_same_as(true)
 		#todo# remove this repeated test ?
@@ -122,22 +121,6 @@ describe Box do
 
 	it "fails for orignal specification example 3: {(B)}{(B)(B)}]" do
 		Box.valid?("{(B)}{(B)(B)}]").must_be_same_as(false)
-	end
-
-	# => against ouput
-	it "returns 0 for orginal specification example 1: [{(B)}{(B)(B)}]" do
-		skip
-		Box.validate("[{(B)}{(B)(B)}]").must_output(0)
-	end
-
-	it "returns 1 for orignal specification example 2: [{(B}{(B)(B)}]" do
-		skip
-		Box.validate("[{(B}{(B)(B)}]").must_output(1)
-	end
-
-	it "returns 1 for orignal specification example 3: {(B)}{(B)(B)}]" do
-		skip
-		Box.validate("{(B)}{(B)(B)}]").must_output(1)
 	end
 
 end
