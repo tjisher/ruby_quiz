@@ -6,8 +6,9 @@
 
 #TOD#
 # all iterations
-# validate matches valid?
-# ? change must_output to check exit code
+# check error messages
+# changing characters/sets
+# get_errors vs valid?
 
 require_relative 'validate_box.rb'
 require 'minitest/spec'
@@ -17,9 +18,6 @@ describe Box do
 	#methods and empty payload
 	it "answers to valid?" do
 		Box.must_respond_to(:valid?, "")
-	end
-	it "answers to validate" do
-		Box.must_respond_to(:validate, "")
 	end
 
 	it "fails empty strings" do
