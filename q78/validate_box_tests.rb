@@ -104,6 +104,11 @@ describe Box do
 		#todo# all iterations
 	end
 
+	it "fails if any wraping is empty" do
+		Box.valid?("(B{})").must_be_same_as(false)
+		#todo# all iterations
+	end
+
 	#orignal specification
 	# => against valid?
 	it "passes orginal specification example 1: [{(B)}{(B)(B)}]" do
