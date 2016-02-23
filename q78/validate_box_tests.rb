@@ -121,4 +121,25 @@ describe Box do
 		Box.valid?("{(B)}{(B)(B)}]").must_be_same_as(false)
 	end
 
+	#change characters
+	it "passes simple packaging with new single character set" do
+		Box.valid?("<B>", ["<>"]).must_be_same_as(true)
+	end
+
+	it "doesnt still pass default characters when they are replaced" do
+		Box.valid?("(B)", ["<>"]).must_be_same_as(false)
+	end
+
+	it "passes simple packaging with new extended character set" do
+		Box.valid?("<B>", ["()","{}","[]","<>"]).must_be_same_as(true)
+	end
+
+	it "passes nested packaging with new extended character set" do
+		Box.valid?("(<B>)", ["()","{}","[]","<>"]).must_be_same_as(true)
+	end
+
+	it "fails incorrect packages with replaced character set" do
+		Box.valid?("(<B>", ["<>","()"]).must_be_same_as(false)
+	end
+
 end
