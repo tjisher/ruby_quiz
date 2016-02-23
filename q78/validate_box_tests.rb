@@ -3,6 +3,7 @@
 #basic types
 #nested types
 #orignal specification
+#change character set
 
 #TOD#
 # all iterations
@@ -121,7 +122,7 @@ describe Box do
 		Box.valid?("{(B)}{(B)(B)}]").must_be_same_as(false)
 	end
 
-	#change characters
+	#change character set
 	it "passes simple packaging with new single character set" do
 		Box.valid?("<B>", ["<>"]).must_be_same_as(true)
 	end

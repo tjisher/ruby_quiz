@@ -23,8 +23,9 @@ class Box
 	end
 
 	#boolean, wrapper for validate
-	def self.valid?( package)
-		get_errors( package) == nil
+	def self.valid?( package, containers=CONTAINER_CHARACTERS, 
+			item_character=ITEM_CHARACTER)
+		get_errors( package, containers, item_character) == nil
 	end
 
 	#checks if given string is a valid package
@@ -50,7 +51,7 @@ class Box
 		# first and last do not make pair
 		if !package.is_a?(String) || package.length < 3
 			failure_message = "Package must be at least 3 characters"
-		elsif !matching_pair?(package[0] + package[-1])
+		elsif !matching_pair?(package[0] + package[-1], containers)
 			failure_message = "Outside of package does not match, maybe seperate packages"
 		end
 
@@ -75,10 +76,10 @@ class Box
 
 				#deal with a close
 				elsif closes.include?(char)
-					if !matching_pair?( unclosed_opens.last + char)
+					if !matching_pair?( unclosed_opens.last + char, containers)
 						#close not the last opened
 						failure_message = "Closed wrapping that was not just opened"
-					elsif matching_pair?( package[current_char_position - 1] + char)
+					elsif matching_pair?( package[current_char_position - 1] + char, containers)
 						#close with no item, ie ()
 						failure_message = "Wrapping closed with no content"
 					end
