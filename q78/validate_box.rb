@@ -62,57 +62,38 @@ class Box
 
 		#signals
 		item_count = package.count( item_character)
+		container_chracter_counts = {}
+		container_characters = containers.join("")
+		containers.join("").each_char do |char|
+			container_chracter_counts[char] = package.count(char)
+		end
 
 
 		#attempt
-		if error[:type] == :too_short
-		#empty, short
-			if !package.is_a?(String) || package.empty?
-				suggestion = "(B)"
-			elsif item_count = 1
-				#something appropiate to wrap
+		case eror[:type] 
+		when :too_short
+			#check which open already in use
+			# => check which close already in use
+			#give matching pair with B inside
+
+			if !suggestion
+				#no found character bias/clue 
+				suggestion = "#{open_close_chars[:opens].first}B#{open_close_chars[:closes].first}" #ie (B)
 			end	
-		elsif condition
-		#typos
-		#removals
-		# illegal, no items
-		#first/last
-		#close mismatch
-		#close with no open
+		when :outside_mismatch
+			#use which of two has total uneven count
+			#use another wrapping, if any
+		when :unknown_character
+			#replace typo's
+			#remove anything unknown
+		when :close_no_item
+			#remove empty package
+		when :close_mismatch
+			#check if 
+			#close last opened
+		when :item_no_open
+
 		end
-	end
-
-	def frank( package, containers=CONTAINER_CHARACTERS, 
-			item_character=ITEM_CHARACTER)
-		open_close_chars = get_open_closes( containers)
-
-		#{(B)}
-		#{
-		# (B) == nil
-		#}
-
-		#{(B)
-		#{
-		# (B) == nil
-
-		current_char_position = 0
-		working = {}
-		layer = 0
-		package.each_char do |char|
-			this_layer = working[layer]
-			parent_layer = working[layer - 1]
-
-			if open_close_chars[:opens].include?(char)
-				
-			elsif open_close_chars[:closes].include?(char)
-
-			elsif char == item_character
-
-			end
-			
-			current_char_position += 1
-		end
-
 	end
 
 	private
@@ -156,11 +137,23 @@ class Box
 		open_close_chars[:closes][ open_close_chars[:opens].index( open) ]
 	end
 
+
 	def self.open_for_close( close, containers=CONTAINER_CHARACTERS)
 		open_close_chars = get_open_closes( containers)
 		open_close_chars[:opens][ open_close_chars[:closes].index( close) ]
 	end
 
+
+	#assumes interal is valid
+	def self.match_lobsided( pacakge, containers=CONTAINER_CHARACTERS)
+		if package.length < 3
+			#
+
+		elsif condition
+		
+		end
+
+	end
 	#checks if given string is a valid package
 	#returns error message, nil for pass
 	#
