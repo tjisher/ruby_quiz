@@ -1,3 +1,6 @@
+regex not-working https://regex101.com/r/fB1vY9/1
+
+##
 
 Fixing the string will be difficult, can create but how determine intention
 - present list of options ?
@@ -9,8 +12,8 @@ Seperate routine for accepting changes to a failed run ?
 - possibly tied to pre-presented solutions ie "I'll go with your suggest solution no3"
 - need verbage to abonden or continue attempts
 
-Memory of valid results ?
-- ie this looks simular to this solution, want to use it instead ?
+Memory of valid results 
++ leave to outside source
 
 Show box expense ie how many used and wasted ones ie nothing inside or double cardboard
 - need cost valution of box types and relative strength/properties
@@ -19,6 +22,60 @@ Some sort of safety rating
 - to balance box expense and make sure weak goods have minimum
 - use F instead of B, ie state type of content Fittings vs solid Bracket
 
+##
+
+error fixing
+
+signals:
+- types of containers already used / not used
+- which containers are odd
+- empty wrapings
+- first/last container character
+- number of itmes
+- simularity to a standard solution ?
+- 
+
+reverse of error checking
+- empty/too short
+	if have a container char, pair it and put a B in
+	else just give example/random 3 char
+- first and last do not make pair
+	check which one is missing a pair and add it to front/back
+- item with no open
+	check which one is missing a pair and add it to directly infront
+	or add random surround on item
+	(dodgy)
+- close before open
+	check which one is missing a pair and add it to directly infront
+	(dodgy)
+- close with no item
+	remove empty wrapping ?
+	add item ?
+- close not the last opened
+	close the last opened
+	or check whether the last opened or close is mismatched
+- illegal characters
+	b -> B
+	change characters near B on keyboard to B, although its not from a keyboard, near ascii codes ?
+	or remove
+
+ordering, prefer to add
+- empty
+- typos
+- removals
+	illegal, no items
+- first/last
+- close mismatch
+- close with no open
+
+? flip and close/open ie ]B[ to [B]
+
+have to show what changed ? simple before/after ? 
+? main method have to return labels, so need seperate wrapper to give msg's themselves
+? work through errors from main method
+? just fire all solutions then try valid? again
+
+##
 
 approach_1
 loop left to right recording number opened and closed
@@ -34,3 +91,6 @@ love the regex, believe in the regex
 - simple pass/fail
 - a bit britle
 - faster ? surely
+
+_4
+- machine learning

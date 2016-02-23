@@ -47,3 +47,14 @@ Basically, the plan is to insert another computer between the controller and the
 ###Extended Spec
 
 stage_1
+
+- no console runner
+- full pass, although not every possible iteration
+- place for meaningful error messages
+
+stage_2
+
+- more than 3 containers ie box types
+- meaningfull error messages
+- attempt error correction
+- dirty regex example and benchmark 
