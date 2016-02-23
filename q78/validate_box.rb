@@ -34,7 +34,7 @@ class Box
 	# non-default item character
 	def self.valid?( package, containers=CONTAINER_CHARACTERS, 
 			item_character=ITEM_CHARACTER)
-		self.get_errors( package, containers, item_character) == nil
+		get_errors( package, containers, item_character) == nil
 	end
 
 	#checks if given string is a valid package
@@ -45,15 +45,74 @@ class Box
 	# non-default item character
 	def self.validate( package, containers=CONTAINER_CHARACTERS, 
 			item_character=ITEM_CHARACTER)
-		self.error_to_string( get_errors( package, containers, item_character) )
+		error_to_string( get_errors( package, containers, item_character) )
 	end
 
-	#return if given string is a open/close pair
-	#
-	#optional parameters
-	# non-default container character set
-	def self.matching_pair?( pair, containers=CONTAINER_CHARACTERS)
-		containers.include?( pair)
+	#returns valid version of given package
+	#if already valid makes no changes
+	#WARNING: significant and substative changes are likely
+	def self.suggest( package, error=:nil, containers=CONTAINER_CHARACTERS, 
+			item_character=ITEM_CHARACTER)
+		error = get_errors( package, containers, item_character) unless error
+		return package unless error
+
+		#prep
+		suggestion =  nil
+		open_close_chars = get_open_closes( containers)
+
+		#signals
+		item_count = package.count( item_character)
+
+
+		#attempt
+		if error[:type] == :too_short
+		#empty, short
+			if !package.is_a?(String) || package.empty?
+				suggestion = "(B)"
+			elsif item_count = 1
+				#something appropiate to wrap
+			end	
+		elsif condition
+		#typos
+		#removals
+		# illegal, no items
+		#first/last
+		#close mismatch
+		#close with no open
+		end
+	end
+
+	def frank( package, containers=CONTAINER_CHARACTERS, 
+			item_character=ITEM_CHARACTER)
+		open_close_chars = get_open_closes( containers)
+
+		#{(B)}
+		#{
+		# (B) == nil
+		#}
+
+		#{(B)
+		#{
+		# (B) == nil
+
+		current_char_position = 0
+		working = {}
+		layer = 0
+		package.each_char do |char|
+			this_layer = working[layer]
+			parent_layer = working[layer - 1]
+
+			if open_close_chars[:opens].include?(char)
+				
+			elsif open_close_chars[:closes].include?(char)
+
+			elsif char == item_character
+
+			end
+			
+			current_char_position += 1
+		end
+
 	end
 
 	private
@@ -69,6 +128,39 @@ class Box
 		message += ". For package:#{error[:package]}." if error[:package]
 	end 
 
+	#return if given string is a open/close pair
+	#
+	#optional parameters
+	# non-default container character set
+	def self.matching_pair?( pair, containers=CONTAINER_CHARACTERS)
+		containers.include?( pair)
+		#todo# remove this and replace in situ
+	end
+
+
+	#get hash of all open characters and all close characters from container
+	def self.get_open_closes( containers=CONTAINER_CHARACTERS)
+		opens = "" # ie [{(
+		closes = "" # ie )}]
+		containers.each do |pair| 
+			opens += pair[0]
+			closes += pair[1]
+		end
+
+		{ opens: opens, closes: closes }
+	end
+
+
+	def self.close_for_open( open, containers=CONTAINER_CHARACTERS)
+		open_close_chars = get_open_closes( containers)
+		open_close_chars[:closes][ open_close_chars[:opens].index( open) ]
+	end
+
+	def self.open_for_close( close, containers=CONTAINER_CHARACTERS)
+		open_close_chars = get_open_closes( containers)
+		open_close_chars[:opens][ open_close_chars[:closes].index( close) ]
+	end
+
 	#checks if given string is a valid package
 	#returns error message, nil for pass
 	#
@@ -80,12 +172,7 @@ class Box
 
 		error = nil
 		#make list of openers and closes
-		opens = "" # ie [{(
-		closes = "" # ie )}]
-		containers.each do |pair| 
-			opens += pair[0]
-			closes += pair[1]
-		end
+		open_close_chars = get_open_closes( containers)
 
 		#simple fails
 		# empty/too short
@@ -111,12 +198,12 @@ class Box
 			package.each_char do |char|
 
 				#opens always allowed
-				if opens.include?(char)
+				if open_close_chars[:opens].include?(char)
 					unclosed_opens << char
 					open_before_item = true
 
 				#deal with a close
-				elsif closes.include?(char)
+				elsif open_close_chars[:closes].include?(char)
 					if !matching_pair?( unclosed_opens.last + char, containers)
 						#close not the last opened
 						error = {type: :close_mismatch, last_unclosed: unclosed_opens.last}
