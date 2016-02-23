@@ -5,6 +5,7 @@
 #orignal specification
 #change character set
 #error messages
+#suggest solutions
 
 #TOD#
 # all iterations
@@ -151,7 +152,7 @@ describe Box do
 		Box.validate("[(Z)]").must_include("3") 
 	end
 
-	it "error message includes position" do
+	it "error message sometimes include position" do
 		Box.validate("[(Z)]").must_include("[(Z)]") 
 	end
 
@@ -173,6 +174,48 @@ describe Box do
 
 	it "error message given illegal character" do
 		Box.validate("[Z]").must_be_kind_of(String)
+	end
+
+	#suggest solutions
+	it "suggests closing packaging in some error messages" do
+		Box.validate("(B").must_include("(B)")
+	end
+
+	it "has suggest method" do
+		Box.must_respond_to(:suggest, "")
+	end
+
+	it "suggests only responds with solution" do
+		Box.suggest("(B").must_equal("(B)")
+	end
+
+	it "suggests does not alter valid packages" do
+		Box.suggest("(B)").must_equal("(B)")
+	end
+
+	it "suggests responses to too short is valid" do
+		Box.valid?( Box.suggest("") ).must_equal(true)
+	end
+
+	it "suggests responses to outside mistmatch is valid" do
+		Box.valid?( Box.suggest("{(B)]") ).must_equal(true)
+	end
+
+	it "suggests responses to no item is valid" do
+		Box.valid?( Box.suggest("[{}]") ).must_equal(true)
+	end
+
+	it "suggests responses to illegal character is valid" do
+		Box.valid?( Box.suggest("[{}]") ).must_equal(true)
+	end
+
+
+	it "suggest fixes orignal specification example 2: [{(B}{(B)(B)}]" do
+		Box.valid?( Box.suggest("[{(B}{(B)(B)}]") ).must_equal(true)
+	end
+
+	it "suggest fixes orignal specification example 3: {(B)}{(B)(B)}]" do
+		Box.valid?( Box.suggest("{(B)}{(B)(B)}]") ).must_equal(true)
 	end
 
 end
