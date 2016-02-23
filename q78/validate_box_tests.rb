@@ -4,11 +4,10 @@
 #nested types
 #orignal specification
 #change character set
+#error messages
 
 #TOD#
 # all iterations
-# check error messages
-# changing characters/sets
 # get_errors vs valid?
 
 require_relative 'validate_box.rb'
@@ -60,7 +59,7 @@ describe Box do
 
 	it "fails when warpping is started but not closed" do
 		Box.valid?("(B").must_be_same_as(false)
-		#todo# all iterations)
+		#todo# all iterations
 	end
 
 	it "fails when warpping is not started" do
@@ -141,6 +140,39 @@ describe Box do
 
 	it "fails incorrect packages with replaced character set" do
 		Box.valid?("(<B>", ["<>","()"]).must_be_same_as(false)
+	end
+
+	#error messages
+	it "no error message given for valid" do
+		Box.validate("(B)").must_be_nil
+	end
+
+	it "error message includes position" do
+		Box.validate("[(Z)]").must_include("3") 
+	end
+
+	it "error message includes position" do
+		Box.validate("[(Z)]").must_include("[(Z)]") 
+	end
+
+	it "error message given for too short" do
+		Box.validate("").must_be_kind_of(String)
+	end
+
+	it "error message given for outside mistmatch" do
+		Box.validate("{(B)]").must_be_kind_of(String)
+	end
+
+	it "error message given for mistmacthed close" do
+		Box.validate("[(B}]").must_be_kind_of(String)
+	end
+
+	it "error message given for no item" do
+		Box.validate("[{}]").must_be_kind_of(String)
+	end
+
+	it "error message given illegal character" do
+		Box.validate("[Z]").must_be_kind_of(String)
 	end
 
 end

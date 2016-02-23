@@ -1,18 +1,52 @@
 ##ToC
-# Box Class
+# Box Module
 
 ##Todo
 # ? possible to be less britle if more wrapping types are added
 # ? helper function to return prior/pre calculated 
+# failure state for unknown errors?
 
 ##Box Class
 # Validation of strings representing wrapping item(s)
 # 
-# key methods
+#
+# key public methods
+# valid?, validate
+#
+# key private methods
 # get_errors
 class Box
 	CONTAINER_CHARACTERS = ["()","{}","[]"]
 	ITEM_CHARACTER = "B"
+	ERROR_MESSAGE_TYPES = {
+		too_short: "Package must be at least 3 characters",
+		outside_mismatch: "Outside of package does not match, maybe seperate packages",
+		close_mismatch: "Closed wrapping that was not just opened",
+		close_no_item: "Wrapping closed with no content",
+		item_no_open: "Item found with no open wrapping",
+		unknown_character: "Unknown character found:"
+	}
+
+	#boolean, wrapper for validate
+	#
+	#optional parameters
+	# non-default container character set
+	# non-default item character
+	def self.valid?( package, containers=CONTAINER_CHARACTERS, 
+			item_character=ITEM_CHARACTER)
+		self.get_errors( package, containers, item_character) == nil
+	end
+
+	#checks if given string is a valid package
+	#returns nil for pass, error message for failure
+	#
+	#optional parameters
+	# non-default container character set
+	# non-default item character
+	def self.validate( package, containers=CONTAINER_CHARACTERS, 
+			item_character=ITEM_CHARACTER)
+		self.error_to_string( get_errors( package, containers, item_character) )
+	end
 
 	#return if given string is a open/close pair
 	#
@@ -22,11 +56,18 @@ class Box
 		containers.include?( pair)
 	end
 
-	#boolean, wrapper for validate
-	def self.valid?( package, containers=CONTAINER_CHARACTERS, 
-			item_character=ITEM_CHARACTER)
-		get_errors( package, containers, item_character) == nil
-	end
+	private
+
+	#get user friendly version of given error object
+	#nil if no error given
+	def self.error_to_string( error, messages=ERROR_MESSAGE_TYPES )
+		return error unless error
+
+		message = messages[ error[:type]]
+		message += ", at position #{error[:position] + 1}" if error[:position]
+		message += ", character:#{error[:char]}" if error[:char]
+		message += ". For package:#{error[:package]}." if error[:package]
+	end 
 
 	#checks if given string is a valid package
 	#returns error message, nil for pass
@@ -37,7 +78,7 @@ class Box
 	def self.get_errors( package, containers=CONTAINER_CHARACTERS, 
 			item_character=ITEM_CHARACTER)
 
-		failure_message = nil
+		error = nil
 		#make list of openers and closes
 		opens = "" # ie [{(
 		closes = "" # ie )}]
@@ -50,9 +91,9 @@ class Box
 		# empty/too short
 		# first and last do not make pair
 		if !package.is_a?(String) || package.length < 3
-			failure_message = "Package must be at least 3 characters"
+			error = {type: :too_short}
 		elsif !matching_pair?(package[0] + package[-1], containers)
-			failure_message = "Outside of package does not match, maybe seperate packages"
+			error = {type: :outside_mismatch}
 		end
 
 		#fails
@@ -61,7 +102,7 @@ class Box
 		# close with no item
 		# close not the last opened
 		# illegal characters
-		unless failure_message
+		unless error
 			current_char_position = 0
 			unclosed_opens = []
 			open_before_item = false
@@ -78,10 +119,10 @@ class Box
 				elsif closes.include?(char)
 					if !matching_pair?( unclosed_opens.last + char, containers)
 						#close not the last opened
-						failure_message = "Closed wrapping that was not just opened"
+						error = {type: :close_mismatch, last_unclosed: unclosed_opens.last}
 					elsif matching_pair?( package[current_char_position - 1] + char, containers)
 						#close with no item, ie ()
-						failure_message = "Wrapping closed with no content"
+						error = {type: :close_no_item}
 					end
 					unclosed_opens.pop 
 
@@ -89,24 +130,22 @@ class Box
 				elsif char == item_character
 					#item with no open
 					unless open_before_item 
-						failure_message = "Item found with no open wrapping"
+						error = {type: :item_no_open}
 					end
 					open_before_item = false
 
 				else 
-					failure_message = "Unknown character found:#{char}"
+					error = {type: :unknown_character}
 				end
 
-				if failure_message
-					failure_message += ", at position #{current_char_position + 1}"
-					break
-				end
+				error.merge!( { position: current_char_position, last_char: char }) if error
+				break if error
 				current_char_position += 1
 			end
 
 		end
 
-		failure_message += ". For package:#{package}" if failure_message
-		failure_message
+		error[:package] = package if error
+		error
 	end
 end
