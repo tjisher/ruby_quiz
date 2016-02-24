@@ -11,21 +11,13 @@ module Pascal
     #each value is sum of two diagonally above
     #left/rightmost is always 1
     def triangle rows
-      result = []
-      result_with_spacing = ""
       return "" unless rows.to_i > 0
+      result = [[1]]
 
-
-      rows.times do |row|
-        result << []
-
-        (row + 1).times do |col|
-
-          if col == 0 || col == row
-            result[row] << 1
-          else
-            result[row] << (result[row - 1][col - 1] + result[row - 1][col])
-          end
+      (1..(rows - 1)).each do |row|
+        result << [1]
+        (1..row).each do |col|
+          result[row] << result[row - 1][col - 1] + result[row - 1][col].to_i
         end
       end
 
