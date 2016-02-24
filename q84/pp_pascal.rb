@@ -2,15 +2,18 @@
 module Pascale
   class << self
 
+    #Pascale Triangle
+    #requires no of rows
+    #
+    #padding left and right, based on last row width
+    #internal padding decreases as digits increase
+    #starts at 1
+    #each value is sum of two diagonally above
+    #left/rightmost is always 1
     def triangle rows
       result = []
       result_with_spacing = ""
-
-      #padding left and right, based on last row width
-      #internal padding decreases as digits increase
-      #starts at 1
-      #each value is sum of two diagonly above
-      #left/rightmost is always 1
+      return "" unless rows.to_i > 0
 
       rows.times do |row|
         result << []
@@ -22,29 +25,21 @@ module Pascale
           else
             result[row] << (result[row - 1][col - 1] + result[row - 1][col])
           end
-
-          #puts "t:#{rows} r:#{row}, c:#{col}, #{result.inspect}"
-
         end
       end
 
-      result.each do |row|
-        row.count.times do |col|
+      #spacing
+      block_length = result[-1].max.to_s.length * 2
+      longest_length = block_length * result[-1].count - 1
+      longest_length -= block_length - 2 #last row ends dont need padding
 
-          case col
-          when 0
-            #prefil
-            result_with_spacing += "#{row[col]} "
-          when (row.count - 1)
-            #postfil
-            result_with_spacing += "#{row[col]}"
-          else
-            #interfil
-            result_with_spacing += "#{row[col]} "
-          end
+      result.each do |row|
+        this_row = ""
+        row.each do |col|
+          this_row += col.to_s.center(block_length)
         end
 
-        result_with_spacing += "\n"
+        result_with_spacing += "#{this_row.strip.center(longest_length)}\n" 
       end
 
       result_with_spacing
