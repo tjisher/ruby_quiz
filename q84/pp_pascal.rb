@@ -1,9 +1,24 @@
 
 module Pascale
-	class << self
+  class << self
 
-		def triangle loops
-		end
+    def triangle rows
+      result = ""
 
-	end
+      #padding left and right, based on last row width
+      #internal padding decreases as digits increase
+
+      #starts at 1
+      #each value is sum of two diagonly above
+      #left/rightmost is always 1
+      #
+
+      rows.times do |row|
+
+      end
+
+      result
+    end
+
+  end
 end
