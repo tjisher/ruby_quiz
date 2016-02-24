@@ -1,14 +1,14 @@
 require_relative 'pp_pascal.rb'
 
-RSpec.describe Pascale, "#triangle" do
+RSpec.describe Pascal, "#triangle" do
   it { should respond_to(:triangle).with(1).arguments }
 
   it "should be respond as string" do
-    expect(Pascale.triangle(1)).to be_kind_of(String)
+    expect(Pascal.triangle(1)).to be_kind_of(String)
   end
 
   it "0 value returns empty string" do
-    actual = Pascale.triangle(0)
+    actual = Pascal.triangle(0)
     expect(actual).to eq("")
   end
 
@@ -17,7 +17,7 @@ RSpec.describe Pascale, "#triangle" do
  1 
 1 1
 STR
-    expect(Pascale.triangle(2)).to eq(pp_two)
+    expect(Pascal.triangle(2)).to eq(pp_two)
   end
 
   context "Orginal Specification" do
@@ -29,7 +29,7 @@ STR
  1 3 3 1 
 1 4 6 4 1
 STR
-      expect(Pascale.triangle(5)).to eq(pp_five)
+      expect(Pascal.triangle(5)).to eq(pp_five)
     end
 
     it "correct for 10" do
@@ -45,7 +45,7 @@ STR
    1     8     28    56    70    56    28    8     1   
 1     9     36    84   126   126    84    36    9     1
 STR
-      expect(Pascale.triangle(10)).to eq(pp_ten)
+      expect(Pascal.triangle(10)).to eq(pp_ten)
     end
   end
 

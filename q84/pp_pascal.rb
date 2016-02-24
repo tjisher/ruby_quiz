@@ -1,5 +1,5 @@
 
-module Pascale
+module Pascal
   class << self
 
     #Pascale Triangle
@@ -14,6 +14,7 @@ module Pascale
       result = []
       result_with_spacing = ""
       return "" unless rows.to_i > 0
+
 
       rows.times do |row|
         result << []
@@ -30,19 +31,14 @@ module Pascale
 
       #spacing
       block_length = result[-1].max.to_s.length * 2
-      longest_length = block_length * result[-1].count - 1
-      longest_length -= block_length - 2 #last row ends dont need padding
+      longest_length = (block_length * result[-1].count) - 1 - (block_length - 2)
 
-      result.each do |row|
-        this_row = ""
-        row.each do |col|
-          this_row += col.to_s.center(block_length)
-        end
-
-        result_with_spacing += "#{this_row.strip.center(longest_length)}\n" 
+      result.collect! do |row|
+        #center columns, into one string, remove outside padding, centre on longest
+        row.collect { |col| col.to_s.center(block_length)}.join.strip.center(longest_length)
       end
 
-      result_with_spacing
+      result.join("\n") + "\n"
     end
 
   end
