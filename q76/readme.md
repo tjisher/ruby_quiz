@@ -1,5 +1,5 @@
 
-My solution gives a much faster first byte time, does no file wide operations like split, gsub, scan, join and uses no monkey patching. However it benchmarks slower and a much higher memory usage being focused on #scramble_word. I can only assume garbage collection is not being aggresive leaving lots of stray temporary variables. Using monkey patching obviously uses less objects but should still be overwhelmed by the data. This is irrelivant of removing either return string or print.
+My #scramble solution gives a much faster first byte time, does no file wide operations like split, gsub, scan, join and uses no monkey patching. However it benchmarks slower and a much higher memory usage being focused on #scramble_word. I can only assume garbage collection is not being aggresive leaving lots of stray temporary variables. Using monkey patching obviously uses less objects but should still be overwhelmed by the data. This is irrelivant of removing either return string or print.
 
 In most scenarios only returning the end result would be fine.
 

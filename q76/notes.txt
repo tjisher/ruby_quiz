@@ -12,3 +12,33 @@ by Tristan Allwood
 >
 >> fortune | ./text_munger
 > Aiovd rtielay at all ctsos.
+
+require 'memory_profiler'
+require 'benchmark'
+
+
+src = <<-STR
+ Now terhe is a fnial rseaon I thnik that Jsues syas, "Lvoe your
+emneies." It is tihs: taht love has wtiihn it a remvpidtee pewor. And
+three is a pwoer three taht eellvtanuy tfranrmsos idvlinaidus. Taht's
+why Juess syas, "Love your emeeins."  Bsceaue if you hate your
+enmeies, you have no way to reedem and to tarfnrsom your eenmeis. But
+if you love yuor emienes, you wlil decsiovr that at the vrey root of
+love is the pwoer of rdoemptein. You just keep loinvg pepole and keep
+lnivog tehm, even tgouhh they're mteitnsiarg you. Hree's the porsen
+who is a nhoeigbr, and tihs psoren is dnoig simhoetng wrong to you and
+all of that. Just keep being fnrdliey to that preosn. Keep liovng
+them. Don't do atnynhig to earsmrbas tehm. Just keep lvonig them, and
+they can't stand it too long. Oh, they raect in mnay ways in the
+bineningg. They react wtih brnetitess beucase they're mad bauesce you
+lvoe them like that. Tehy raect wtih gluit flegines, and setioemms
+they'll hate you a lltite more at that tinoiasrtn piroed, but just
+keep lvniog them. And by the poewr of your love tehy will beark down
+uendr the load. That's lvoe, you see. It is retpmevide, and tihs is
+why Juess says love. Trehe's shimeotng aubot love that blidus up and
+is cavrtiee. Trehe is stmeonihg aubot hate that tares dwon and is
+disettvrcue. So lvoe your eenmeis.
+STR
+
+puts Benchmark.measure { 1_000.times { src.munge }}
+MemoryProfiler.report { src.munge  }.pretty_print
