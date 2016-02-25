@@ -5,6 +5,13 @@ RSpec.describe "#scramble" do
     should respond_to().with(1).arguments
   end
 
+  it "outputs to console same as returns" do
+    src = "frank pete"
+    response = nil #keep in scope
+
+    expect{ response = scramble(src) }.to output(response).to_stdout
+  end
+
   context "Single Word" do
     it "doesnt affect words less than 3 characters" do
       expect( scramble("a") ).to eq("a")
@@ -14,6 +21,16 @@ RSpec.describe "#scramble" do
     it "doesnt change first and last characters" do
       expect( scramble("frank")[0] ).to eq("f")
       expect( scramble("frank")[-1] ).to eq("k")
+    end
+
+    it "randomly changes characters" do
+      src = "pneumonoultramicroscopicsilicovolcanoconiosis" 
+      word_one = scramble(src)
+      word_two = scramble(src)
+      word_three = scramble(src)
+      all_equal = (word_one == word_two) and ( word_two == word_three)
+
+      expect( all_equal ).to eq(false)
     end
 
     it "retinas all characters" do
@@ -46,6 +63,16 @@ RSpec.describe "#scramble" do
       expect( word[1] ).to eq("'")
       expect( word[2] ).to eq("#")
       expect( word[-1] ).to eq("\n")
+    end
+
+    it "returns different results" do
+      src = "a pneumonoultramic roscopicsilicovolcanoconiosis" 
+      word_one = scramble(src)
+      word_two = scramble(src)
+      word_three = scramble(src)
+      all_equal = (word_one == word_two) and ( word_two == word_three)
+
+      expect( all_equal ).to eq(false)
     end
   end
 

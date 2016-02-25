@@ -22,6 +22,7 @@ def scramble text
 
   #check if eneded with word
   unless word.empty?
+    word = scramble_word(word)
     result += word
     print word
   end
@@ -29,7 +30,8 @@ def scramble text
   result
 end
 
+
 def scramble_word word
   return word if word.length < 4
-  word[0] + word.chars[1..-2].sort! { |a,b| rand() <=> rand() }.join + word[-1]
+  word[0] + word.chars[1..-2].sort{ rand <=> rand }.join + word[-1]
 end
