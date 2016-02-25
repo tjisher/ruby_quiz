@@ -2,7 +2,7 @@ require_relative 'scramble.rb'
 
 RSpec.describe "#scramble" do
   it "takes an argument" do
-    should respond_to(:triangle).with(1).arguments
+    should respond_to().with(1).arguments
   end
 
   context "Single Word" do
@@ -12,8 +12,8 @@ RSpec.describe "#scramble" do
     end
 
     it "doesnt change first and last characters" do
-      expect( scramble("frank").first ).to eq("f")
-      expect( scramble("frank").last ).to eq("k")
+      expect( scramble("frank")[0] ).to eq("f")
+      expect( scramble("frank")[-1] ).to eq("k")
     end
 
     it "retinas all characters" do
@@ -34,18 +34,18 @@ RSpec.describe "#scramble" do
       src = " frank "
       word = scramble(src)
 
-      expect( word.first ).to eq(" ")
-      expect( word.last  ).to eq(" ")
+      expect( word[0] ).to eq(" ")
+      expect( word[-1]  ).to eq(" ")
     end
 
     it "ignores non standard characters" do
       src = ":'#\n"
       word = scramble(src)
 
-      expect( word.first ).to eq(":")
+      expect( word[0] ).to eq(":")
       expect( word[1] ).to eq("'")
       expect( word[2] ).to eq("#")
-      expect( word.last ).to eq("\n")
+      expect( word[-1] ).to eq("\n")
     end
   end
 
